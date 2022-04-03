@@ -7,12 +7,15 @@ enum AppTheme {
 
 class ThemeState extends Equatable {
   final AppTheme appTheme;
+  final int randomNum;
+  
   ThemeState({
     this.appTheme = AppTheme.light,
+    required this.randomNum,
   });
 
   factory ThemeState.initial() {
-    return ThemeState();
+    return ThemeState(randomNum: 0);
   }
 
   @override
@@ -23,9 +26,11 @@ class ThemeState extends Equatable {
 
   ThemeState copyWith({
     AppTheme? appTheme,
+    int? randomNum,
   }) {
     return ThemeState(
       appTheme: appTheme ?? this.appTheme,
+       randomNum: randomNum ?? this.randomNum,
     );
   }
 }

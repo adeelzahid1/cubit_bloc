@@ -8,9 +8,10 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc() : super(ThemeState.initial()) {
     on<ChangeThemeEvent>((event, emit) {
       if (event.randInt % 2 == 0) {
-        emit(state.copyWith(appTheme: AppTheme.light));
+        emit(state.copyWith(appTheme: AppTheme.light, randomNum: event.randInt));
+        
       } else {
-        emit(state.copyWith(appTheme: AppTheme.dark));
+        emit(state.copyWith(appTheme: AppTheme.dark, randomNum: event.randInt));
       }
     });
   }
