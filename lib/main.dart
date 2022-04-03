@@ -1,4 +1,4 @@
-import 'package:cubit_bloc/cubits/cubit/counter_cubit.dart';
+import 'package:cubit_bloc/blocs/counter/counter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,8 +11,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CounterCubit>(
-      create: (context) => CounterCubit(),
+    return BlocProvider<CounterBloc>(
+      create: (context) => CounterBloc(),
       child: MaterialApp(
         title: 'MyCounter Cubit',
         debugShowCheckedModeBanner: false,
@@ -31,7 +31,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<CounterCubit, CounterState>(
+      body: BlocListener<CounterBloc, CounterState>(
         listener: (context, state) {
           if (state.counter == 3) {
             showDialog(
@@ -51,21 +51,20 @@ class MyHomePage extends StatelessWidget {
             );
           }
         },
-        builder: (context, state) {
-          return Center(
-            child: Text(
-              '${state.counter}',
-              style: TextStyle(fontSize: 52.0),
-            ),
-          );
-        },
+        child: Center(
+          child: Text(
+            '${context.watch<CounterBloc>().state.counter}',
+            style: TextStyle(fontSize: 52.0),
+          ),
+        ),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
             onPressed: () {
-              context.read<CounterCubit>().increment();
+              BlocProvider.of<CounterBloc>(context)
+                  .add(IncrementCounterEvent());
             },
             child: Icon(Icons.add),
             heroTag: 'increment',
@@ -73,7 +72,7 @@ class MyHomePage extends StatelessWidget {
           SizedBox(width: 10.0),
           FloatingActionButton(
             onPressed: () {
-              context.read<CounterCubit>().decrement();
+              context.read<CounterBloc>().add(DecrementCounterEvent());
             },
             child: Icon(Icons.remove),
             heroTag: 'decrement',
