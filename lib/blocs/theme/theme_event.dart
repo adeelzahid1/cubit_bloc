@@ -6,3 +6,16 @@ abstract class ThemeEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class ChangeThemeEvent extends ThemeEvent {
+  final int randInt;
+  ChangeThemeEvent({
+    required this.randInt,
+  });
+
+  @override
+  String toString() => 'ChangeThemeEvent(randInt: $randInt)';
+
+  @override
+  List<Object> get props => [randInt];
+}
