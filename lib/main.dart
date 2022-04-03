@@ -31,14 +31,14 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<CounterBloc, CounterState>(
+      body: BlocConsumer<CounterBloc, CounterState>(
         listener: (context, state) {
           if (state.counter == 3) {
             showDialog(
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  content: Text('counter is ${state.counter}'),
+                  content: Text('counter isssss ${state.counter}'),
                 );
               },
             );
@@ -51,20 +51,21 @@ class MyHomePage extends StatelessWidget {
             );
           }
         },
-        child: Center(
+        builder: (context, state){
+          return Center(
           child: Text(
             '${context.watch<CounterBloc>().state.counter}',
             style: TextStyle(fontSize: 52.0),
           ),
-        ),
+        );
+        },
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
             onPressed: () {
-              BlocProvider.of<CounterBloc>(context)
-                  .add(IncrementCounterEvent());
+              BlocProvider.of<CounterBloc>(context).add(IncrementCounterEvent());
             },
             child: Icon(Icons.add),
             heroTag: 'increment',

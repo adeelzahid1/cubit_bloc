@@ -1,7 +1,7 @@
 
 part of 'counter_bloc.dart';
 
-abstract class CounterEvent extends Equatable {
+abstract class CounterEvent {
   const CounterEvent();
 
   @override
