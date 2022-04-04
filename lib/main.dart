@@ -105,22 +105,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
               ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ShowMeCounter(incrementSize: context.watch<CountingBloc>().state.counting),
-                    
-                  ),);
-
-
-
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (_) {
-                //     return BlocProvider.value(
-                //       value: context.read<CountingBloc>(),
-                //       child: ShowMeCounter(),
-                //     );
-                //   }),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) {
+                    return BlocProvider.value(
+                      value: context.read<CountingBloc>(),
+                      child: ShowMeCounter(incrementSize: context.watch<CountingBloc>().state.counting),
+                    );
+                  }),
+                );
               },
               child: Text(
                 'Go to Counter Page',

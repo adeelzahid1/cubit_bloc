@@ -14,17 +14,19 @@ class ShowMeCounter extends StatelessWidget {
         title: Text('Counter'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Center(
-          //   child: BlocBuilder<CountingBloc, CountingState>(
-          //     builder: (context, state) {
-          //       return Text(
-          //         '${state.counting}',
-          //         style: TextStyle(fontSize: 52.0),
-          //       );
-          //     },
-          //   ),
-          // ),
+          Center(
+            child: BlocBuilder<CountingBloc, CountingState>(
+              builder: (context, state) {
+                return Text(
+                  '${state.counting}',
+                  style: TextStyle(fontSize: 52.0),
+                );
+              },
+            ),
+          ),
 
           SizedBox(height: 40.0),
           Center(child: Text('${incrementSize}'),)
