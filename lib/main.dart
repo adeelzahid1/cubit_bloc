@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       },
       child: Scaffold(
-        appBar: AppBar(title: Text('Cubit 2 Cubit Demo')),
+        appBar: AppBar(title: Text('Bloc 2 Bloc bloc_listner')),
         backgroundColor: context.watch<ColorBloc>().state.color,
         body: Center(
           child: Column(
