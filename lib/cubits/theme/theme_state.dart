@@ -1,11 +1,12 @@
-part of 'theme_bloc.dart';
+part of 'theme_cubit.dart';
+
 
 enum AppTheme{
   light,
   dark,
 }
 
-class ThemeState{
+class ThemeState extends Equatable{
   final AppTheme appTheme;
   final int randomNum;
   

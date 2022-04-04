@@ -1,5 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:cubit_bloc/blocs/theme/theme_bloc.dart';
+import 'package:equatable/equatable.dart';
+part 'theme_state.dart';
+
+
 
 class ThemeCubit extends Cubit<ThemeState> {
   ThemeCubit() : super(ThemeState.initial());
@@ -14,4 +17,6 @@ class ThemeCubit extends Cubit<ThemeState> {
       }
   }
 }
+
+
 

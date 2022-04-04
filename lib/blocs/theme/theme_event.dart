@@ -1,21 +1,19 @@
-part of 'theme_bloc.dart';
+// part of 'theme_bloc.dart';
 
-abstract class ThemeEvent extends Equatable {
-  const ThemeEvent();
+// abstract class ThemeEvent extends Equatable {
+//   const ThemeEvent();
 
-  @override
-  List<Object> get props => [];
-}
+//   @override
+//   List<Object> get props => [];
+// }
 
-class ChangeThemeEvent extends ThemeEvent {
-  final int randInt;
-  ChangeThemeEvent({
-    required this.randInt,
-  });
+// class ChangeThemeEvent extends ThemeEvent {
+//   final int randInt;
+//   ChangeThemeEvent({required this.randInt});
 
-  @override
-  String toString() => 'ChangeThemeEvent(randInt: $randInt)';
+//   @override
+//   String toString() => 'ChangeThemeEvent(randInt: $randInt)';
 
-  @override
-  List<Object> get props => [randInt];
-}
+//   @override
+//   List<Object> get props => [randInt];
+// }
