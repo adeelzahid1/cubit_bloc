@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+     MyApp({Key? key}) : super(key: key);
+    final CountingBloc _countingBloc = CountingBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,12 @@ class MyApp extends StatelessWidget {
         title: 'Cubit to Cubit basics',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primarySwatch: Colors.blue),
-        home: MyHomePage(),
+        routes: {
+          '/': (context) => BlocProvider.value(value: _countingBloc, child: MyHomePage(),),
+          '/counterPage':(context) => BlocProvider.value(value: _countingBloc,
+           child: ShowMeCounter(value: _countingBloc.state.counting),
+           )
+        },
       ),
     );
   }
@@ -42,6 +48,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int incrementSize = 1;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -105,15 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
               ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) {
-                    return BlocProvider.value(
-                      value: context.read<CountingBloc>(),
-                      child: ShowMeCounter(incrementSize: context.watch<CountingBloc>().state.counting),
-                    );
-                  }),
-                );
+                Navigator.pushNamed(context, '/counterPage');
               },
               child: Text(
                 'Go to Counter Page',

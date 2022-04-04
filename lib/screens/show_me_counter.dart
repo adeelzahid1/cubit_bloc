@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ShowMeCounter extends StatelessWidget {
-  int incrementSize;
-  ShowMeCounter({required this.incrementSize, Key? key}) : super(key: key);
+  int? value;
+  ShowMeCounter({this.value, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +27,8 @@ class ShowMeCounter extends StatelessWidget {
               },
             ),
           ),
-
           SizedBox(height: 40.0),
-          Center(child: Text('${incrementSize}'),)
+          Center(child: Text('${value}'),)
 
         ],
       ),
