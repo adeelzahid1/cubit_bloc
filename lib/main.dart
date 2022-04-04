@@ -1,6 +1,6 @@
-import 'package:cubit_bloc/cubits/theme/theme_cubit.dart';
+import 'package:cubit_bloc/cubits/color/color_cubit.dart';
+import 'package:cubit_bloc/cubits/counting/counting_cubit.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
@@ -12,23 +12,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ThemeCubit>(
-      create: (context) => ThemeCubit(),
-      child: BlocBuilder<ThemeCubit, ThemeState>(
-        builder: (context, state) {
-        return MaterialApp(
-          title: 'Event Payload',
-          debugShowCheckedModeBanner: false,
-          theme: state.appTheme == AppTheme.light
-              ? ThemeData.light()
-              : ThemeData.dark(),
-          home: const MyHomePage(),
+    return BlocProvider<ColorCubit>(
+      create: (context) => ColorCubit(),
+      child: BlocProvider<CountingCubit>(
+        create: (context) => CountingCubit(
+          colorCubit: context.read<ColorCubit>(),
+          ),
+          child: MaterialApp(
+            title: 'Cubit to Cubit basics',
+            debugShowCheckedModeBanner:  false,
+            theme: ThemeData(primarySwatch: Colors.blue),
+            home: MyHomePage(),
+          ),
+      ),
+        
         );
-      }),
-         
-      
-      
-    );
   }
 }
 
@@ -38,24 +36,40 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Theme'),
-      ),
+      backgroundColor: context.watch<ColorCubit>().state.color,
       body: Center(
-        child: ElevatedButton(
-          child: BlocBuilder<ThemeCubit, ThemeState>(
-            builder: (context, state) {
-              return Text(
-                'Change Theme ${state.randomNum}',
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              child: Text(
+                'Change Color',
                 style: TextStyle(fontSize: 24.0),
-              );
-            },
-          ),
-          onPressed: () {
-            final int randInt = Random().nextInt(1000);
-            print('randInt: $randInt');
-            context.read<ThemeCubit>().changeTheme(randInt);
-          },
+              ),
+              onPressed: () {
+                context.read<ColorCubit>().changeColor();
+              },
+            ),
+            SizedBox(height: 20.0),
+            Text(
+              '${context.watch<CountingCubit>().state.counting}',
+              style: TextStyle(
+                fontSize: 52.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              child: Text(
+                'Increment Counter',
+                style: TextStyle(fontSize: 24.0),
+              ),
+              onPressed: () {
+                context.read<CountingCubit>().changeCounting();
+              },
+            ),
+          ],
         ),
       ),
     );
