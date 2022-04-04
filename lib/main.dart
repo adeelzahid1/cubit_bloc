@@ -28,11 +28,22 @@ class MyApp extends StatelessWidget {
         title: 'Cubit to Cubit basics',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primarySwatch: Colors.blue),
-        routes: {
-          '/': (context) => BlocProvider.value(value: _countingBloc, child: MyHomePage(),),
-          '/counterPage':(context) => BlocProvider.value(value: _countingBloc,
-           child: ShowMeCounter(value: _countingBloc.state.counting),
-           )
+        // routes: {
+        //   '/': (context) => BlocProvider.value(value: _countingBloc, child: MyHomePage(),),
+        //   '/counterPage':(context) => BlocProvider.value(value: _countingBloc,
+        //    child: ShowMeCounter(value: _countingBloc.state.counting),
+        //    )
+        // },
+        onGenerateRoute: (RouteSettings settings){
+          switch(settings.name){
+            case '/':
+              return MaterialPageRoute(builder: (context) => BlocProvider.value(value: _countingBloc, child: MyHomePage(),));
+            case '/counterPage':
+              return MaterialPageRoute(builder: (context) => BlocProvider.value(value: _countingBloc,
+              child: ShowMeCounter(value: _countingBloc.state.counting)),);
+            default:
+              return null;
+          }
         },
       ),
     );
