@@ -11,16 +11,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CounterCubit>(
-      create: (context) => CounterCubit(),
-      child: MaterialApp(
-        title: 'MyCounter Cubit',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const MyHomePage(),
+    return MaterialApp(
+      title: 'MyCounter Cubit',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: const MyHomePage(),
     );
   }
 }
@@ -31,74 +28,43 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<CounterCubit, CounterState>(
-        listener: (context, state) {
-          if (state.counter == 3) {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  content: Text('counter is ${state.counter}'),
-                );
-              },
-            );
-          } else if (state.counter == -1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) {
-                return OtherPage();
-              }),
-            );
-          }
-        },
-        builder: (context, state) {
-          return Center(
-            child: Text(
-              '${state.counter}',
-              style: TextStyle(fontSize: 52.0),
-            ),
-          );
-        },
-      ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () {
-              context.read<CounterCubit>().increment();
-            },
-            child: Icon(Icons.add),
-            heroTag: 'increment',
-          ),
-          SizedBox(width: 10.0),
-          FloatingActionButton(
-            onPressed: () {
-              context.read<CounterCubit>().decrement();
-            },
-            child: Icon(Icons.remove),
-            heroTag: 'decrement',
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
-
-class OtherPage extends StatelessWidget {
-  const OtherPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Other'),
-      ),
       body: Center(
-        child: Text(
-          'Other',
-          style: TextStyle(fontSize: 52.0),
+        child: BlocProvider<CounterCubit>(
+          create: (context) => CounterCubit(),
+          child: Builder(
+            builder: (context) => Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      child: Text(
+                        'Increment',
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                      onPressed: () {
+                        BlocProvider.of<CounterCubit>(context).increment();
+                      },
+                    ),
+                    Text(
+                      '${BlocProvider.of<CounterCubit>(context, listen: true).state.counter}',
+                      style: TextStyle(fontSize: 52.0),
+                    ),
+                    ElevatedButton(
+                      child: Text(
+                        'Decrement',
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                      onPressed: () {
+                        BlocProvider.of<CounterCubit>(context).decrement();
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
