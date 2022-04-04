@@ -1,5 +1,5 @@
-import 'package:cubit_bloc/cubits/color/color_cubit.dart';
-import 'package:cubit_bloc/cubits/counting/counting_cubit.dart';
+import 'package:cubit_bloc/blocs/color/color_bloc.dart';
+import 'package:cubit_bloc/blocs/counting/counting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,11 +14,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ColorCubit>(
-          create: (context) => ColorCubit(),
+        BlocProvider<ColorBloc>(
+          create: (context) => ColorBloc(),
         ),
-        BlocProvider<CountingCubit>(
-          create: (context) => CountingCubit(),
+        BlocProvider<CountingBloc>(
+          create: (context) => CountingBloc(colorBloc: context.read<ColorBloc>()),
         ),
       ],
       child: MaterialApp(
@@ -43,22 +43,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ColorCubit, ColorState>(
-      listener: (context, state) {
-         if (state.color == Colors.red) {
-          incrementSize = 1;
-        } else if (state.color == Colors.green) {
-          incrementSize = 10;
-        } else if (state.color == Colors.blue) {
-          incrementSize = 100;
-        } else if (state.color == Colors.black) {
-          context.read<CountingCubit>().changeCounting(-100);
-          incrementSize = -100;
-        }
-      },
-      child: Scaffold(
+    return  Scaffold(
         appBar: AppBar(title: Text('Cubit 2 Cubit Demo')),
-        backgroundColor: context.watch<ColorCubit>().state.color,
+        backgroundColor: context.watch<ColorBloc>().state.color,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -70,11 +57,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 onPressed: () {
                   // context.read<ColorCubit>().changeColor();
-                  BlocProvider.of<ColorCubit>(context).changeColor();
+                  BlocProvider.of<ColorBloc>(context).add(ChangeColorEvent());
                 },
               ),
               SizedBox(height: 20.0),
-              BlocBuilder<CountingCubit, CountingState>(
+              BlocBuilder<CountingBloc, CountingState>(
                 builder: (context, state) {
                   return Text(
                     '${state.counting}',
@@ -94,14 +81,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(fontSize: 24.0),
                 ),
                 onPressed: () {
-                  // context.read<CountingCubit>().changeCounting();
-                  BlocProvider.of<CountingCubit>(context).changeCounting(incrementSize);
+                  // context.read<CountingCubit>().changeCounting(incrementSize);
+                  BlocProvider.of<CountingBloc>(context).add(ChangeCountingEvent());
                 },
               ),
             ],
           ),
         ),
-      ),
-    );
+      );
+   
   }
 }
