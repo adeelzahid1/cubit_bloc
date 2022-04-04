@@ -12,21 +12,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ColorCubit>(
-      create: (context) => ColorCubit(),
-      child: BlocProvider<CountingCubit>(
-        create: (context) => CountingCubit(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ColorCubit>(create: (context) => ColorCubit(),),
+        BlocProvider<CountingCubit>(create: (context) => CountingCubit(
           colorCubit: context.read<ColorCubit>(),
-          ),
-          child: MaterialApp(
+           ),),
+      ],
+      child: MaterialApp(
             title: 'Cubit to Cubit basics',
-            debugShowCheckedModeBanner:  false,
+            debugShowCheckedModeBanner: false,
             theme: ThemeData(primarySwatch: Colors.blue),
             home: MyHomePage(),
-          ),
       ),
-        
-        );
+    );
   }
 }
 
@@ -36,6 +35,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Cubit 2 Cubit Demo')),
       backgroundColor: context.watch<ColorCubit>().state.color,
       body: Center(
         child: Column(
@@ -47,17 +47,23 @@ class MyHomePage extends StatelessWidget {
                 style: TextStyle(fontSize: 24.0),
               ),
               onPressed: () {
-                context.read<ColorCubit>().changeColor();
+                // context.read<ColorCubit>().changeColor();
+                BlocProvider.of<ColorCubit>(context).changeColor();
               },
             ),
             SizedBox(height: 20.0),
-            Text(
-              '${context.watch<CountingCubit>().state.counting}',
-              style: TextStyle(
-                fontSize: 52.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+            BlocBuilder<CountingCubit, CountingState>(
+              builder: (context, state) {
+                return Text(
+                  '${state.counting}',
+                  style: TextStyle(
+                    fontSize: 52.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                );
+              //  '${context.watch<CountingCubit>().state.counting}',
+              },
             ),
             SizedBox(height: 20.0),
             ElevatedButton(
@@ -66,7 +72,8 @@ class MyHomePage extends StatelessWidget {
                 style: TextStyle(fontSize: 24.0),
               ),
               onPressed: () {
-                context.read<CountingCubit>().changeCounting();
+                // context.read<CountingCubit>().changeCounting();
+                BlocProvider.of<CountingCubit>(context).changeCounting();
               },
             ),
           ],
