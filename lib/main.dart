@@ -1,5 +1,7 @@
 import 'package:cubit_bloc/blocs/color/color_bloc.dart';
+import 'package:cubit_bloc/blocs/counter/counter_bloc.dart';
 import 'package:cubit_bloc/blocs/counting/counting_bloc.dart';
+import 'package:cubit_bloc/screens/show_me_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -98,6 +100,36 @@ class _MyHomePageState extends State<MyHomePage> {
                   // BlocProvider.of<CountingBloc>(context).add(ChangeCountingEvent());
                 },
               ),
+
+              SizedBox(height: 40.0),
+
+              ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => ShowMeCounter(incrementSize: context.watch<CountingBloc>().state.counting),
+                    
+                  ),);
+
+
+
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (_) {
+                //     return BlocProvider.value(
+                //       value: context.read<CountingBloc>(),
+                //       child: ShowMeCounter(),
+                //     );
+                //   }),
+                // );
+              },
+              child: Text(
+                'Go to Counter Page',
+                style: TextStyle(fontSize: 20.0),
+              ),
+            ),
+            SizedBox(height: 20.0),
+
+            
             ],
           ),
         ),
