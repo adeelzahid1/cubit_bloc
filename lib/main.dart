@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
           create: (context) => ColorBloc(),
         ),
         BlocProvider<CountingBloc>(
-          create: (context) => CountingBloc(colorBloc: context.read<ColorBloc>()),
+          create: (context) => CountingBloc(),
         ),
       ],
       child: MaterialApp(
@@ -43,7 +43,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return BlocListener<ColorBloc, ColorState>(
+      listener: (context, colorState) {
+        if (colorState.color == Colors.red) {
+        incrementSize = 1;
+      } else if (colorState.color == Colors.green) {
+        incrementSize = 10;
+      } else if (colorState.color == Colors.blue) {
+        incrementSize = 100;
+      } else if (colorState.color == Colors.black) {
+        incrementSize = -100;
+        context.read<CountingBloc>().add(ChangeCountingEvent(incrementSize: incrementSize));
+      }
+      },
+      child: Scaffold(
         appBar: AppBar(title: Text('Cubit 2 Cubit Demo')),
         backgroundColor: context.watch<ColorBloc>().state.color,
         body: Center(
@@ -81,13 +94,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(fontSize: 24.0),
                 ),
                 onPressed: () {
-                  // context.read<CountingCubit>().changeCounting(incrementSize);
-                  BlocProvider.of<CountingBloc>(context).add(ChangeCountingEvent());
+                  context.read<CountingBloc>().add(ChangeCountingEvent(incrementSize: incrementSize));
+                  // BlocProvider.of<CountingBloc>(context).add(ChangeCountingEvent());
                 },
               ),
             ],
           ),
         ),
-      );
+      ),
+    );
   }
 }
